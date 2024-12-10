@@ -41,4 +41,8 @@ router.get('/accounts/:id/insights', authMiddleware, instagramController.getAcco
 router.post('/competitors', authMiddleware, instagramController.addCompetitor);
 router.get('/competitors/:id/stats', authMiddleware, instagramController.getCompetitorStats);
 
+// İçerik önerileri
+router.get('/accounts/:id/content-suggestions', authMiddleware, instagramController.getContentSuggestions);
+router.post('/hashtag-recommendations', authMiddleware, instagramController.getHashtagRecommendations);
+
 module.exports = router; 

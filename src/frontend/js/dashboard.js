@@ -679,3 +679,114 @@ async function viewInsights(accountId) {
         alert(error.message);
     }
 }
+
+// Rakip analizi görüntüleme fonksiyonu
+async function viewCompetitorAnalysis(competitorId) {
+    try {
+        const response = await fetch(`/api/instagram/competitors/${competitorId}/analysis`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Analiz verileri alınamadı');
+        }
+
+        const data = await response.json();
+        showAnalysisModal(data);
+    } catch (error) {
+        console.error('Hata:', error);
+        showNotification(error.message, 'error');
+    }
+}
+
+// Analiz modalını göster
+function showAnalysisModal(analysis) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
+    modal.innerHTML = `
+        <div class="bg-white p-8 rounded-lg shadow-lg w-[900px] max-h-[90vh] overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-6">Rakip Analizi</h2>
+            
+            <!-- Temel Metrikler -->
+            <div class="grid grid-cols-4 gap-4 mb-8">
+                <div class="bg-blue-50 p-4 rounded">
+                    <h3 class="text-sm font-semibold text-blue-600">Takipçiler</h3>
+                    <p class="text-2xl font-bold">${analysis.account_info.followers.toLocaleString()}</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded">
+                    <h3 class="text-sm font-semibold text-green-600">Etkileşim Oranı</h3>
+                    <p class="text-2xl font-bold">${analysis.account_info.engagement_rate.toFixed(2)}%</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded">
+                    <h3 class="text-sm font-semibold text-purple-600">Gönderi Sayısı</h3>
+                    <p class="text-2xl font-bold">${analysis.post_analysis.total_posts}</p>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded">
+                    <h3 class="text-sm font-semibold text-yellow-600">Ortalama Beğeni</h3>
+                    <p class="text-2xl font-bold">${Math.round(analysis.post_analysis.avg_likes).toLocaleString()}</p>
+                </div>
+            </div>
+
+            <!-- İçerik Analizi -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">İçerik Analizi</h3>
+                <div class="grid grid-cols-2 gap-6">
+                    <!-- İçerik Türü Dağılımı -->
+                    <div class="bg-gray-50 p-4 rounded">
+                        <h4 class="text-lg font-semibold mb-3">İçerik Türü Dağılımı</h4>
+                        <div class="space-y-2">
+                            ${Object.entries(analysis.post_analysis.content_type_distribution)
+                                .map(([type, count]) => `
+                                    <div class="flex justify-between items-center">
+                                        <span>${type}</span>
+                                        <span class="font-semibold">${count}</span>
+                                    </div>
+                                `).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- En İyi Performans Gösteren Hashtagler -->
+                    <div class="bg-gray-50 p-4 rounded">
+                        <h4 class="text-lg font-semibold mb-3">En İyi Hashtagler</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${analysis.hashtag_analysis.slice(0, 10).map(tag => `
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">
+                                    #${tag.tag}
+                                    <span class="text-xs ml-1">${tag.avg_engagement.toFixed(0)}</span>
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- En İyi Paylaşım Zamanları -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">En İyi Paylaşım Zamanları</h3>
+                <div class="bg-gray-50 p-4 rounded">
+                    <div class="grid grid-cols-3 gap-4">
+                        ${analysis.timing_analysis
+                            .sort((a, b) => b.avg_engagement - a.avg_engagement)
+                            .slice(0, 3)
+                            .map(time => `
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold">${time.hour}:00</div>
+                                    <div class="text-sm text-gray-600">
+                                        Ortalama Etkileşim: ${time.avg_engagement.toFixed(0)}
+                                    </div>
+                                </div>
+                            `).join('')}
+                    </div>
+                </div>
+            </div>
+
+            <button class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded hover:bg-gray-300"
+                    onclick="this.closest('.fixed').remove()">
+                Kapat
+            </button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}

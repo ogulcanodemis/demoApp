@@ -226,6 +226,66 @@ const instagramController = {
             console.error('Rakip istatistikleri hatası:', error);
             res.status(500).json({ error: error.message });
         }
+    },
+
+    getContentSuggestions: async (req, res) => {
+        try {
+            const accountId = parseInt(req.params.id);
+            const account = await db.getAccountById(accountId);
+
+            if (!account || account.user_id !== req.user.id) {
+                return res.status(404).json({ error: 'Hesap bulunamadı' });
+            }
+
+            // Rakip analizlerini al
+            const competitors = await db.getCompetitorsByUserId(req.user.id);
+            const competitorAnalyses = await Promise.all(
+                competitors.map(comp => instagramService.getCompetitorAnalytics(comp.account_name))
+            );
+
+            // AI ile içerik önerileri oluştur
+            const suggestions = await aiService.generateContentSuggestions({
+                account_data: account,
+                competitor_analyses: competitorAnalyses
+            });
+
+            res.json(suggestions);
+        } catch (error) {
+            console.error('İçerik önerisi hatası:', error);
+            res.status(500).json({ error: error.message });
+        }
+    },
+
+    getHashtagRecommendations: async (req, res) => {
+        try {
+            const { caption } = req.body;
+            
+            if (!caption) {
+                return res.status(400).json({ error: 'Caption gereklidir' });
+            }
+
+            // Rakiplerin başarılı hashtaglerini al
+            const competitors = await db.getCompetitorsByUserId(req.user.id);
+            const competitorHashtags = await Promise.all(
+                competitors.map(comp => instagramService.getCompetitorPosts(comp.account_name))
+            ).then(posts => 
+                posts.flat()
+                    .map(post => post.hashtags)
+                    .flat()
+                    .filter((v, i, a) => a.indexOf(v) === i)
+            );
+
+            // AI ile hashtag önerileri oluştur
+            const recommendations = await aiService.generateHashtagRecommendations(
+                caption,
+                competitorHashtags
+            );
+
+            res.json(recommendations);
+        } catch (error) {
+            console.error('Hashtag önerisi hatası:', error);
+            res.status(500).json({ error: error.message });
+        }
     }
 };
 

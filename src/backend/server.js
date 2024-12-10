@@ -7,6 +7,10 @@ const instagramRoutes = require('./routes/instagram');
 const webhookRoutes = require('./routes/webhook');
 const analyticsRoutes = require('./routes/analytics');
 const reportingRoutes = require('./routes/reporting');
+const calendarRoutes = require('./routes/calendar');
+const mediaRoutes = require('./routes/media');
+const statsRoutes = require('./routes/stats');
+require('./services/cronService');
 
 // Global hata yakalama
 process.on('uncaughtException', (error) => {
@@ -26,11 +30,17 @@ app.use(express.json());
 // Statik dosyalar için
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+// Uploads klasörü için statik route
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/instagram', instagramRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/reporting', reportingRoutes);
+app.use('/api/calendar', calendarRoutes);
+app.use('/api/media', mediaRoutes);
+app.use('/api/stats', statsRoutes);
 
 // Webhook Routes
 app.use('/webhook', webhookRoutes);
@@ -50,6 +60,10 @@ app.get('/register', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/dashboard.html'));
+});
+
+app.get('/calendar', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/calendar.html'));
 });
 
 // Hata yakalama middleware'i
