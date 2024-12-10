@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Instagram AI Marketing</title>
+    <link href="./css/tailwind.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-xl font-bold">Instagram AI Marketing</span>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <span id="userEmail" class="mr-4 text-gray-600"></span>
+                    <button id="logoutBtn" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-sign-out-alt"></i> Çıkış
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Instagram Hesap Yönetimi -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4">Instagram Hesapları</h2>
+                <div id="accountsList" class="space-y-4">
+                    <!-- Hesaplar buraya dinamik olarak eklenecek -->
+                </div>
+                <button id="addAccountBtn" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    Hesap Ekle
+                </button>
+            </div>
+
+            <!-- Rakip Analizi -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4">Rakip Analizi</h2>
+                <div id="competitorsList" class="space-y-4">
+                    <!-- Rakipler buraya dinamik olarak eklenecek -->
+                </div>
+                <button id="addCompetitorBtn" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    Rakip Ekle
+                </button>
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-3">Karşılaştırmalı Analiz</h3>
+                    <canvas id="competitorChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Performans Özeti -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4">Performans Özeti</h2>
+                <div id="performanceSummary" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h3 class="text-sm font-semibold text-blue-600">Toplam Takipçi</h3>
+                            <p id="totalFollowers" class="text-2xl font-bold text-blue-800">-</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h3 class="text-sm font-semibold text-green-600">Etkileşim Oranı</h3>
+                            <p id="engagementRate" class="text-2xl font-bold text-green-800">-</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+                <button id="refreshPerformance" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-sync-alt"></i> Verileri Güncelle
+                </button>
+            </div>
+
+            <!-- Performans Özeti altına ekleyin -->
+            <div class="bg-white rounded-lg shadow p-6 mt-6">
+                <h2 class="text-xl font-bold mb-4">Detaylı İstatistikler</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-purple-50 p-4 rounded">
+                        <h3 class="text-sm font-semibold text-purple-600">En İyi Gönderi Zamanı</h3>
+                        <p id="bestPostingTime" class="text-lg font-bold text-purple-800">-</p>
+                    </div>
+                    <div class="bg-pink-50 p-4 rounded">
+                        <h3 class="text-sm font-semibold text-pink-600">Ortalama Beğeni</h3>
+                        <p id="avgLikes" class="text-lg font-bold text-pink-800">-</p>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded">
+                        <h3 class="text-sm font-semibold text-yellow-600">Ortalama Yorum</h3>
+                        <p id="avgComments" class="text-lg font-bold text-yellow-800">-</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-3">Önerilen Hashtagler</h3>
+                    <div id="suggestedHashtags" class="flex flex-wrap gap-2">
+                        <!-- Hashtagler buraya dinamik olarak eklenecek -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/dashboard.js"></script>
+</body>
+</html> 

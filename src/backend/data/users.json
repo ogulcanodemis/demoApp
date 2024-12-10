@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "username": "ogulcan",
+    "email": "ogulcan.odemis28@gmail.com",
+    "password": "$2a$10$HD27/zj/EGxZBdwcUsT.K..oT6s29FUARIaRs.G3ZyIrU/IZZuVFS",
+    "created_at": "2024-12-10T13:54:06.853Z"
+  },
+  {
+    "id": 2,
+    "username": "ogulcan.odemis28@gmaik.com",
+    "email": "ogulcan.odemis28@gmaik.com",
+    "password": "$2a$10$GqpDAVkNzIzaj0QF/5pUReMovuQKx7CzyfmLQwVJPhYcCEGG01Luy",
+    "created_at": "2024-12-10T13:55:08.744Z"
+  }
+]

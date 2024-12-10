@@ -1,0 +1,46 @@
+{
+  "name": "instagram-ai-marketing",
+  "version": "1.0.0",
+  "description": "AI-powered Instagram Marketing Tool",
+  "main": "src/backend/server.js",
+  "scripts": {
+    "start": "node src/backend/server.js",
+    "dev": "nodemon src/backend/server.js",
+    "build:css": "tailwindcss -i src/frontend/css/styles.css -o src/frontend/css/tailwind.css --watch",
+    "create-db": "node src/backend/database/createDb.js",
+    "docker:build": "docker build -t instagram-ai-marketing .",
+    "docker:run": "docker run -p 3000:3000 instagram-ai-marketing",
+    "docker:compose": "docker-compose up",
+    "docker:compose:build": "docker-compose up --build"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "openai": "^4.28.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.9",
+    "@tailwindcss/typography": "^0.5.15",
+    "jest": "^29.7.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.4",
+    "tailwindcss": "^3.4.16"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/tests/setup.js"
+    ]
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

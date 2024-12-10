@@ -1,0 +1,7 @@
+mkdir instagram-ai-marketing
+cd instagram-ai-marketing
+npm init -y
+mkdir src
+mkdir src/frontend
+mkdir src/backend
+mkdir src/database
